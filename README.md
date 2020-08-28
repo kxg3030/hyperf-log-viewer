@@ -13,7 +13,7 @@
 
 3.注册路由地址
 
-`Router::get('/logs', 'Hyperf\LogViewer\Controller\LogViewController@index');`
+`Router::get('/logs', 'Sett\LogViewer\Controller\LogViewController@index');`
 
 4.安装Sett组件
 
