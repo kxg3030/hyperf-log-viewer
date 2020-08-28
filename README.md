@@ -5,25 +5,26 @@
 
 1.安装组件
 
-$ `composer require kxg3030/hyperf-log-viewer`
+`composer require kxg3030/hyperf-log-viewer`
 
 2.发布配置文件
 
-$ `php bin/hyperf.php vendor:publish kxg3030/hyperf-log-viewer`
+`php bin/hyperf.php vendor:publish kxg3030/hyperf-log-viewer`
 
 3.注册路由地址
 
-$ `Router::get('/logs', 'Hyperf\LogViewer\Controller\LogViewController@index');`
+`Router::get('/logs', 'Hyperf\LogViewer\Controller\LogViewController@index');`
 
 4.安装Hyperf组件
 
-$ `composer require hyperf/view`
+`composer require hyperf/view`
 
 5.安装模板引擎
 
-$ `composer require sy-records/think-template`
+`composer require sy-records/think-template`
 
-6. 配置视图
+6.配置视图
+
 > 在config\autoload\view.php文件中添加配置
 ```$xslt
 
