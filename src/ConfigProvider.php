@@ -39,7 +39,7 @@ class ConfigProvider
                     'description' => '',
                     'source' => __DIR__ . '/../publish/log.html',
                     'destination' => BASE_PATH . '/storage/view/log.html',
-                ],
+                ]
             ],
         ];
     }

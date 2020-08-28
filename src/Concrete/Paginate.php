@@ -8,7 +8,7 @@ use Hyperf\Utils\Collection;
 
 class Paginate
 {
-    public $size = 2;
+    public $size = 10;
 
     private $show = 5;
 
