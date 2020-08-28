@@ -1,5 +1,5 @@
 {
-    "name": "sett/Sett-log-viewer",
+    "name": "sett/hyperf-log-viewer",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -14,19 +14,19 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SettTest\\": "tests"
+            "HyperfTest\\": "tests"
         }
     },
     "require": {
         "php": ">=7.2",
         "ext-swoole": ">=4.5",
-        "Sett/framework": "2.0.*",
-        "Sett/di": "2.0.*"
+        "hyperf/framework": "2.0.*",
+        "hyperf/di": "2.0.*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
         "phpstan/phpstan": "^0.12",
-        "Sett/testing": "2.0.*",
+        "hyperf/testing": "2.0.*",
         "swoole/ide-helper": "dev-master"
     },
     "config": {
@@ -38,8 +38,8 @@
         "cs-fix": "php-cs-fixer fix $1"
     },
     "extra": {
-        "Sett": {
-            "config": "Sett\\LogViewer\\ConfigProvider"
+        "hyperf": {
+            "config": "Hyperf\\LogViewer\\ConfigProvider"
         }
     }
 }
