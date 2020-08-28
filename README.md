@@ -1,8 +1,7 @@
-# Introduction
+#### 一、效果图
+![image](https://github.com/kxg3030/image/blob/master/log_viewer.png)
 
-Hyperf 日志查看组件
-
-# Installation using Composer
+#### 二、使用方法
 
 1.安装组件
 
