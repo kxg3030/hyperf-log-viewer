@@ -1,5 +1,5 @@
 #### 一、效果图
-![image](https://github.com/kxg3030/image/blob/master/log_viewer.png)
+![image](https://github.com/kxg3030/hyperf-log-viewer/blob/master/src/log_viewer.png)
 
 #### 二、使用方法
 
