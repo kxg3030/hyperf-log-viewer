@@ -17,7 +17,7 @@
 
 4.安装Sett组件
 
-`composer require Hyperf/view`
+`composer require hyperf/view`
 
 5.安装模板引擎
 
