@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @contact  group@Sett.io
  * @license  https://github.com/Sett/Sett/blob/master/LICENSE
  */
-namespace Sett\LogViewer;
+namespace Hyperf\LogViewer;
 
 class ConfigProvider
 {
