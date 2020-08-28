@@ -1,23 +1,23 @@
 #### 一、效果图
-![image](https://github.com/kxg3030/hyperf-log-viewer/blob/master/src/log_viewer.png)
+![image](https://github.com/kxg3030/Sett-log-viewer/blob/master/src/log_viewer.png)
 
 #### 二、使用方法
 
 1.安装组件
 
-`composer require kxg3030/hyperf-log-viewer`
+`composer require sett/hyperf-log-viewer`
 
 2.发布配置文件
 
-`php bin/hyperf.php vendor:publish kxg3030/hyperf-log-viewer`
+`php bin/Sett.php vendor:publish sett/hyperf-log-viewer`
 
 3.注册路由地址
 
 `Router::get('/logs', 'Hyperf\LogViewer\Controller\LogViewController@index');`
 
-4.安装Hyperf组件
+4.安装Sett组件
 
-`composer require hyperf/view`
+`composer require Hyperf/view`
 
 5.安装模板引擎
 

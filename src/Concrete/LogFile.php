@@ -1,11 +1,11 @@
 <?php
 
-namespace Hyperf\LogViewer\Concrete;
+namespace Sett\LogViewer\Concrete;
+
+
 
 use Hyperf\Contract\ConfigInterface;
-use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Collection;
-
 
 class LogFile implements LogFileInterface
 {

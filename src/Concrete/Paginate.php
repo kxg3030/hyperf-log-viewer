@@ -1,6 +1,6 @@
 <?php
 
-namespace Hyperf\LogViewer\Concrete;
+namespace Sett\LogViewer\Concrete;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\ApplicationContext;
