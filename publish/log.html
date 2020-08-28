@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hyperf Log Viewer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        html, body {
+            padding: 5px;
+        }
+
+        table tr td:nth-child(1) {
+            width: 30px;
+        }
+
+        table tr td:nth-child(2) {
+            width: 80px;
+        }
+
+        table tr td:nth-child(3) {
+            width: 180px;
+        }
+
+        .list-group-item:hover {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div>
+        <nav class="navbar navbar-light bg-dark">
+            <a class="navbar-brand text-white">Hyperf Log Viewer</a>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 pt-2">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header bg-dark text-light">
+                    File：{$logTotal} &nbsp;&nbsp;&nbsp;  Line：{$logDetailTotal}
+                </div>
+                <ul class="list-group">
+                    {foreach id="log" name="logList" key="key"}
+                    <li class="list-group-item {if $log.active}active{/if}">
+                        {$log.name}
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <br>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {$logPage|raw}
+                </ul>
+            </nav>
+
+        </div>
+        <div class="col-lg-10 pt-2">
+            <div class="pt-3 rounded-lg border shadow p-3 mb-3 bg-white">
+                <div class="row">
+                    <form class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="keyword">关键字：</label>
+                            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Search...">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="level">级别：</label>
+                            <select class="custom-select" id="level">
+                                <option value="">全部</option>
+                                {foreach $level as $lev}
+                                <option value="{$lev.name}" {if $lev.active} selected {/if}>{$lev.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <!--<div class="form-group mx-sm-3 mb-2">
+                            <label for="created_at">开始时间：</label>
+                            <input type="text" class="form-control" id="created_at" name="created_at"
+                                   placeholder="Search...">
+                        </div>
+                        -
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="created_at">结束时间：</label>
+                            <input type="text" class="form-control" id="end_at" name="created_at"
+                                   placeholder="Search...">
+                        </div>-->
+                        <button type="button" class="btn btn-dark mb-2" id="logDetailSearch">搜索</button>
+                    </form>
+                </div>
+                <div class="row no-gutters">
+                    <table class="table table-bordered hover">
+                        <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>级别</td>
+                            <td>日期</td>
+                            <td>内容</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {if $logDetail == ""}
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                空
+                            </td>
+                        </tr>
+                        {else/}
+                        {foreach $logDetail as $key => $log}
+                        <tr>
+                            <td>{$key + 1}</td>
+                            <td class="{$log.class}">
+                                {$log.level}
+                            </td>
+                            <td>{$log.date}</td>
+                            <td class="text-break">{$log.text}</td>
+                        </tr>
+                        {/foreach}
+                        {/if}
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            {$logDetailPage|raw}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        const logFileList = $(".list-group-item");
+        logFileList.click(function () {
+            logFileList.removeClass("active");
+            let params = getQueryParam();
+            let filePage = params.file_page;
+            if (filePage === undefined || filePage == null) {
+                filePage = 1;
+            }
+            $(this).addClass("active");
+            let href = getLocationUrl();
+            window.location.href = href + "?file=" + $(this).text().trim("\r\n") + "&file_page=" + filePage + "&content_page=1";
+        });
+        $("#logDetailSearch").click(function () {
+            let params = getQueryParam();
+            let keyword = $("input[name='keyword']").val().trim() || "";
+            let level = $("#level").val().trim() || "";
+            let filePage = params.file_page || 1;
+            let file = params.file || $(".list-group-item").eq(0).text().trim();
+            let href = getLocationUrl();
+            window.location.href = href + "?file=" + file + "&file_page=" + filePage + "&content_page=1" + "&keyword=" + keyword + "&level=" + level;
+        });
+    });
+
+    function getLocationUrl() {
+        let url = location.href;
+        if (url.indexOf("?") !== -1) {
+            url = url.substring(0, url.indexOf("?"))
+        }
+        return url;
+    }
+
+    function getQueryParam() {
+        var url = location.search;
+        var theRequest = {};
+        if (url.indexOf("?") !== -1) {
+            var str = url.substring(url.indexOf("?") + 1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+</script>
+</html>
