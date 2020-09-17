@@ -9,13 +9,13 @@
 
 2.发布配置文件
 
-`php bin/Sett.php vendor:publish sett/hyperf-log-viewer`
+`php bin/hyperf.php vendor:publish sett/hyperf-log-viewer`
 
 3.注册路由地址
 
 `Router::get('/logs', 'Sett\LogViewer\Controller\LogViewController@index');`
 
-4.安装Sett组件
+4.安装view组件
 
 `composer require hyperf/view`
 
