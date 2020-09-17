@@ -266,11 +266,14 @@ class LogFile implements LogFileInterface
     private function readFileLine($fullPath) {
         $content = [];
         $handle  = fopen($fullPath, "r+");
-        while (feof($handle) == false) {
-            $line = fgets($handle);
-            if ($line) {
-                $content[] = $line;
+        if(is_resource($handle)){
+            while (feof($handle) == false) {
+                $line = fgets($handle);
+                if ($line) {
+                    $content[] = $line;
+                }
             }
+
         }
         return $content;
     }
