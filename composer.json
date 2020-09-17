@@ -39,7 +39,7 @@
     },
     "extra": {
         "hyperf": {
-            "config": "Hyperf\\LogViewer\\ConfigProvider"
+            "config": "Sett\\LogViewer\\ConfigProvider"
         }
     }
 }
