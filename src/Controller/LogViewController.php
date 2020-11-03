@@ -9,7 +9,6 @@ use Hyperf\View\RenderInterface;
 use Sett\LogViewer\Concrete\LogFile;
 
 
-
 class LogViewController
 {
     /**
@@ -21,6 +20,11 @@ class LogViewController
      * @var RequestInterface
      */
     private $request;
+
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
 
     /**
      * @var RenderInterface
@@ -37,9 +41,10 @@ class LogViewController
      * @param ResponseInterface $response
      */
     public function __construct(RenderInterface $render, RequestInterface $request, ResponseInterface $response, ConfigInterface $config) {
-        $this->request = $request;
-        $this->render  = $render;
-        $this->config  = $config;
+        $this->request  = $request;
+        $this->render   = $render;
+        $this->config   = $config;
+        $this->response = $response;
     }
 
     /**
@@ -77,7 +82,26 @@ class LogViewController
                     "active" => $this->logFile->level == "warning"
                 ]
             ],
+            "params"         => $this->request->query()
         ]);
+    }
+
+    public function delete() {
+        $params  = $this->request->post();
+        $logPath = $this->config->get("logViewer.path") . ($params["filename"] ?? "");
+        if (!is_dir($logPath) && file_exists($logPath)) {
+            return $this->response->json(["data" => unlink($logPath)]);
+        }
+        return $this->response->json(["data" => false]);
+    }
+
+    public function download() {
+        $params  = $this->request->query();
+        $logPath = $this->config->get("logViewer.path") . ($params["filename"] ?? "");
+        if (!is_dir($logPath) && file_exists($logPath)) {
+            return $this->response->download($logPath, $logPath);
+        }
+        return $this->response->json(["data" => false]);
     }
 
     private function markActive(array $logList) {

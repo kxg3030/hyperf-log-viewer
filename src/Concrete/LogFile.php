@@ -3,7 +3,6 @@
 namespace Sett\LogViewer\Concrete;
 
 
-
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Collection;
@@ -205,7 +204,7 @@ class LogFile implements LogFileInterface
         $fullPath = $this->config->get("logViewer.path") . $this->currentFileName;
         if (file_exists($fullPath)) {
             $content    = $this->readFileLine($fullPath);
-            $collection = new Collection($content);
+            $collection = (new Collection($content));
             if ($collection->isNotEmpty()) {
                 $collection->each(function ($content) use (&$lineList) {
                     $content = trim(strtolower($content));
@@ -230,7 +229,7 @@ class LogFile implements LogFileInterface
                             'level'   => $level,
                             "class"   => $this->class[$level],
                             'date'    => $match[1],
-                            'text'    => $match[4],
+                            'text'    => str_replace(["\r", "\n"], "", $match[4]),
                             'in_file' => isset($current[5]) ? $match[5] : "",
                             'stack'   => preg_replace("/^\n*/", '', $content)
                         ];
@@ -238,7 +237,7 @@ class LogFile implements LogFileInterface
                 });
             }
         }
-        $this->detail = new Collection($lineList);
+        $this->detail = (new Collection($lineList))->sortByDesc("date")->values();
         return $this;
     }
 
@@ -266,7 +265,7 @@ class LogFile implements LogFileInterface
     private function readFileLine($fullPath) {
         $content = [];
         $handle  = fopen($fullPath, "r+");
-        if(is_resource($handle)){
+        if (is_resource($handle)) {
             while (feof($handle) == false) {
                 $line = fgets($handle);
                 if ($line) {
