@@ -26,76 +26,115 @@
             cursor: pointer;
         }
 
+        #level:hover {
+            cursor: pointer;
+        }
+
+        .custom-select option:hover {
+            cursor: pointer;
+        }
+        .dropdown-menu.show {
+            min-width: 48px;
+        }
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <div>
-        <nav class="navbar navbar-light bg-dark">
-            <a class="navbar-brand text-white">Hyperf Log Viewer</a>
-        </nav>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info" data-type="0" id="confirm">确定</button>
+            </div>
+        </div>
     </div>
+</div>
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-2 pt-2">
-            <div class="card" style="width: 18rem;">
+        <div class="col-lg-12 bg-dark rounded">
+            <nav class="navbar navbar-light">
+                <a class="navbar-brand text-white">Hyperf Log Viewer—<kbd>powered by sett</kbd></a>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-lg-2 pl-0">
+            <div class="card">
                 <div class="card-header bg-dark text-light">
-                    File：{$logTotal} &nbsp;&nbsp;&nbsp;  Line：{$logDetailTotal}
+                    File：{$logTotal} &nbsp;&nbsp;&nbsp; Line：{$logDetailTotal}
                 </div>
                 <ul class="list-group">
                     {foreach id="log" name="logList" key="key"}
-                    <li class="list-group-item {if $log.active}active{/if}">
-                        {$log.name}
+                    <li class="list-group-item {if $log.active}text-primary{/if} p-2">
+                        <div class="row">
+                            <div class="col-lg-8 filename">
+                                <span>{$log.name}</span>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                        操作
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item pl-2 download" href="/logs/download?filename={$log.name}">下载</a>
+                                        <a class="dropdown-item pl-2 delete" href="#">删除</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                     {/foreach}
                 </ul>
             </div>
             <br>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {$logPage|raw}
-                </ul>
-            </nav>
-
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav aria-label="page navigation example">
+                        <ul class="pagination">
+                            {$logPage|raw}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-10 pt-2">
-            <div class="pt-3 rounded-lg border shadow p-3 mb-3 bg-white">
-                <div class="row">
+        <div class="col-lg-10 rounded border shadow bg-white  pt-2">
+            <div class="row">
+                <div class="col-lg-12">
                     <form class="form-inline">
                         <div class="form-group mx-sm-3 mb-2">
-                            <label for="keyword">关键字：</label>
-                            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="search...">
+                            <label for="keyword" class="sr-only">关键字：</label>
+                            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="关键字"
+                                   value='{$params.keyword ?? ""}'  style="margin-left: -15px">
                         </div>
                         <div class="form-group mx-sm-3 mb-2">
-                            <label for="level">级别：</label>
-                            <select class="custom-select" id="level">
+                            <label for="level">日志级别：</label>
+                            <select class="form-control" id="level">
                                 <option value="">全部</option>
                                 {foreach $level as $lev}
                                 <option value="{$lev.name}" {if $lev.active} selected {/if}>{$lev.name}</option>
                                 {/foreach}
                             </select>
                         </div>
-                        <!--<div class="form-group mx-sm-3 mb-2">
-                            <label for="created_at">开始时间：</label>
-                            <input type="text" class="form-control" id="created_at" name="created_at"
-                                   placeholder="Search...">
-                        </div>
-                        -
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label for="created_at">结束时间：</label>
-                            <input type="text" class="form-control" id="end_at" name="created_at"
-                                   placeholder="Search...">
-                        </div>-->
                         <button type="button" class="btn btn-dark mb-2" id="logDetailSearch">搜索</button>
                     </form>
-                </div>
-                <div class="row no-gutters">
-                    <table class="table table-bordered hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <td>#</td>
-                            <td>级别</td>
-                            <td>日期</td>
-                            <td>内容</td>
+                            <th>#</th>
+                            <th>级别</th>
+                            <th>日期</th>
+                            <th>内容</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -119,21 +158,18 @@
                         {/if}
                         </tbody>
                     </table>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-end">
-                            {$logDetailPage|raw}
-                        </ul>
-                    </nav>
                 </div>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    {$logDetailPage|raw}
+                </ul>
+            </nav>
         </div>
-
     </div>
 </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+<script src="https://lib.baomitu.com/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -143,26 +179,45 @@
         crossorigin="anonymous"></script>
 <script>
     $(function () {
-        const logFileList = $(".list-group-item");
+        const logFileList = $(".filename");
+        const deleteBtn = $(".delete");
         logFileList.click(function () {
-            logFileList.removeClass("active");
+            logFileList.removeClass("text-primary");
             let params = getQueryParam();
             let filePage = params.file_page;
             if (filePage === undefined || filePage == null) {
                 filePage = 1;
             }
-            $(this).addClass("active");
+            $(this).addClass("text-primary");
             let href = getLocationUrl();
-            window.location.href = href + "?file=" + $(this).text().trim("\r\n") + "&file_page=" + filePage + "&content_page=1";
+            window.location.href = href + "?file=" + $(this).find("span:eq(0)").text().trim("\r\n") + "&file_page=" + filePage + "&content_page=1";
         });
         $("#logDetailSearch").click(function () {
             let params = getQueryParam();
             let keyword = $("input[name='keyword']").val().trim() || "";
             let level = $("#level").val().trim() || "";
             let filePage = params.file_page || 1;
-            let file = params.file || $(".list-group-item").eq(0).text().trim();
+            let file = params.file || $(".list-group-item").eq(0).find("span:eq(0)").text().trim("\r\n");
             let href = getLocationUrl();
             window.location.href = href + "?file=" + file + "&file_page=" + filePage + "&content_page=1" + "&keyword=" + keyword + "&level=" + level;
+        });
+        deleteBtn.click(function () {
+            $(".modal-body").find("p").text("删除后不可恢复, 要继续吗?");
+            $("#modal").modal("show");
+            $("#confirm").attr({"data-type":1,"filename":$(this).parent().parent().parent().parent().find("span:eq(0)").text().trim("\r\n")});
+        });
+        $("body").on("click","#confirm",function () {
+            let type =  $(this).attr("data-type");
+            let filename = $(this).attr("filename");
+            if(parseInt(type) === 1){
+                console.log(filename);
+                $.ajax({type:"post",dataType:"json",data:{"filename":filename},url:"/logs/delete",success:function (e) {
+                        if(e.data){
+                            location.href = "/logs/list";
+                        }
+                    }});
+            }
+            $("#modal").modal("hide");
         });
     });
 
