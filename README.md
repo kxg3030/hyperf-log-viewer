@@ -13,7 +13,11 @@
 
 3.注册路由地址
 
-`Router::get('/logs', 'Sett\LogViewer\Controller\LogViewController@index');`
+```
+Router::get('/logs/list', [LogViewController::class, "index"]);
+Router::post('/logs/delete', [LogViewController::class, "delete"]);
+Router::get('/logs/download', [LogViewController::class, "download"]);
+```
 
 4.安装view组件
 
