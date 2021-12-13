@@ -175,7 +175,7 @@ class LogFile implements LogFileInterface
                 })->map(function ($log) {
                     return $this->getFileName($log);
                 })->unique();
-                $this->collection = $collection;
+                $this->collection = $collection->reverse();
             }
         }
         return $this;
