@@ -27,7 +27,7 @@ class LogFile implements LogFileInterface
     /**
      * @var float|int
      */
-    private $maxSize = 50 * 1024 * 1024;
+    private $maxSize = 20 * 1024 * 1024;
 
     /**
      * @var Paginate
